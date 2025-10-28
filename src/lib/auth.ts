@@ -49,7 +49,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
     async session({ session, token }) {
       if (token?.provider) {
-        (session as any).provider = token.provider;
+        (session).provider = token.provider;
       }
       return session;
     },
