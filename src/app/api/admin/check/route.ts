@@ -21,10 +21,21 @@ export async function POST(req: Request) {
 
     const data = await response.json();
 
-    // Struktur hasil dari D1: { results: [ { id: 1 } ] } atau []
-    const exists = data?.result?.[0]?.results?.length > 0;
+    const admin = data?.result?.[0]?.results?.[0];
 
-    return Response.json({ exists });
+    if (!admin) {
+      return Response.json({ exists: false });
+    }
+
+    // Struktur hasil dari D1: { results: [ { id: 1 } ] } atau []
+    // const exists = data?.result?.[0]?.results?.length > 0;
+    return Response.json({
+      exists: true,
+      id: admin.id,
+      role: admin.role,
+    });
+
+    // return Response.json({ exists });
   } catch (err: any) {
     console.error("Error di /api/admin/check:", err);
     return Response.json(

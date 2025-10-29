@@ -7,13 +7,10 @@ import {
   SidebarInset,
   SidebarProvider,
 } from "@/components/ui/sidebar"
-import { auth } from "@/lib/auth";
-
-import data from "./data.json"
+import Data from "./Data";
 
 export default async function Page() {
-  const session = await auth();
-
+  
   return (
     <SidebarProvider
       style={
@@ -25,15 +22,11 @@ export default async function Page() {
     >
       <AppSidebar variant="inset" />
       <SidebarInset>
-        <SiteHeader title={"Dashboard"} />
+        <SiteHeader title={"Funpaper Calistung"} />
         <div className="flex flex-1 flex-col">
           <div className="@container/main flex flex-1 flex-col gap-2">
-            <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
-              <SectionCards />
-              <div className="px-4 lg:px-6">
-                <ChartAreaInteractive />
-              </div>
-              <DataTable data={data} />
+            <div className="flex flex-col gap-4 py-4 px-6 md:gap-6 md:py-6">
+              <Data />
             </div>
           </div>
         </div>

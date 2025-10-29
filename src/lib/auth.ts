@@ -33,6 +33,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           return false; // tolak login
         }
 
+         // simpan data user (id & role) ke user object (sementara)
+        user.role = data.role || "admin";
+        user.id = data.id;
+
         return true; // izinkan login
       } catch (e) {
         console.error("Gagal cek ke D1:", e);
@@ -40,16 +44,31 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
     },
 
-    async jwt({ token, account }) {
-      if (account) {
-        token.provider = account.provider;
+    async jwt({ token, user }) {
+      // if (account) {
+      //   token.provider = account.provider;
+      // }
+      if (user) {
+        token.id = user.id;
+        token.role = user.role; // simpan role
+        token.email = user.email;
+        token.provider = token.provider || "google";
       }
       return token;
     },
 
     async session({ session, token }) {
-      if (token?.provider) {
-        (session).provider = token.provider;
+      // if (token?.provider) {
+      //   (session).provider = token.provider;
+      // }
+      if (token) {
+        session.user = {
+          ...session.user,
+          id: token.id,
+          email: token.email,
+          role: token.role,
+        };
+        session.provider = token.provider;
       }
       return session;
     },
